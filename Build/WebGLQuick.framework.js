@@ -19575,6 +19575,11 @@ var dynCall_fffiiii = Module["dynCall_fffiiii"] = function() {
 };
 
 /** @type {function(...*):?} */
+var dynCall_vifiii = Module["dynCall_vifiii"] = function() {
+  return (dynCall_vifiii = Module["dynCall_vifiii"] = Module["asm"]["dynCall_vifiii"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
 var dynCall_vifffffi = Module["dynCall_vifffffi"] = function() {
   return (dynCall_vifffffi = Module["dynCall_vifffffi"] = Module["asm"]["dynCall_vifffffi"]).apply(null, arguments);
 };
@@ -19667,11 +19672,6 @@ var dynCall_viiiffffffffi = Module["dynCall_viiiffffffffi"] = function() {
 /** @type {function(...*):?} */
 var dynCall_ffifi = Module["dynCall_ffifi"] = function() {
   return (dynCall_ffifi = Module["dynCall_ffifi"] = Module["asm"]["dynCall_ffifi"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_vifiii = Module["dynCall_vifiii"] = function() {
-  return (dynCall_vifiii = Module["dynCall_vifiii"] = Module["asm"]["dynCall_vifiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
