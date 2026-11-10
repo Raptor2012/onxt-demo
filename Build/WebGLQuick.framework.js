@@ -19600,8 +19600,8 @@ var dynCall_viiiidfii = Module["dynCall_viiiidfii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_viiiififii = Module["dynCall_viiiififii"] = function() {
-  return (dynCall_viiiififii = Module["dynCall_viiiififii"] = Module["asm"]["dynCall_viiiififii"]).apply(null, arguments);
+var dynCall_viiiifififi = Module["dynCall_viiiifififi"] = function() {
+  return (dynCall_viiiifififi = Module["dynCall_viiiifififi"] = Module["asm"]["dynCall_viiiifififi"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -19742,6 +19742,11 @@ var dynCall_ffii = Module["dynCall_ffii"] = function() {
 /** @type {function(...*):?} */
 var dynCall_ifiii = Module["dynCall_ifiii"] = function() {
   return (dynCall_ifiii = Module["dynCall_ifiii"] = Module["asm"]["dynCall_ifiii"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_iiiiifii = Module["dynCall_iiiiifii"] = function() {
+  return (dynCall_iiiiifii = Module["dynCall_iiiiifii"] = Module["asm"]["dynCall_iiiiifii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -20302,11 +20307,6 @@ var dynCall_viiiifiiii = Module["dynCall_viiiifiiii"] = function() {
 /** @type {function(...*):?} */
 var dynCall_vffiii = Module["dynCall_vffiii"] = function() {
   return (dynCall_vffiii = Module["dynCall_vffiii"] = Module["asm"]["dynCall_vffiii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_iiiiifii = Module["dynCall_iiiiifii"] = function() {
-  return (dynCall_iiiiifii = Module["dynCall_iiiiifii"] = Module["asm"]["dynCall_iiiiifii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
