@@ -8323,11 +8323,16 @@ var tempI64;
     }
 
   function _SetWebGLCursor(cursorPtr) {
-      var cursor = UTF8ToString(cursorPtr);
+      var candidates = UTF8ToString(cursorPtr).split("\n");
       var canvas = Module.canvas || document.querySelector("canvas");
       if (!canvas) return;
   
-      canvas.style.cursor = cursor;
+      // A browser drops a value it does not understand, so take the first candidate that sticks.
+      for (var i = 0; i < candidates.length; i++) {
+        canvas.style.cursor = "";
+        canvas.style.cursor = candidates[i];
+        if (canvas.style.cursor) return;
+      }
     }
 
   function _SetupRpm(url, targetGameObjectName){
