@@ -8250,6 +8250,17 @@ var tempI64;
       return 0;
     }
 
+  function _OnVRHapticWebAvailable() {
+          return typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function' ? 1 : 0;
+      }
+
+  function _OnVRHapticWebVibrate(pattern, length) {
+          if (typeof navigator === 'undefined' || typeof navigator.vibrate !== 'function') return;
+          var timings = [];
+          for (var i = 0; i < length; i++) timings.push(HEAP32[(pattern >> 2) + i]);
+          navigator.vibrate(timings);
+      }
+
   function _OnVRRigOrientationRead(values) {
       var state = window.onVRRigOrientation;
       if (!state || !state.ready) return 0;
@@ -8312,6 +8323,18 @@ var tempI64;
 
   function _OnVRRigOrientationSupported() {
       return window.DeviceOrientationEvent && (navigator.maxTouchPoints > 0 || 'ontouchstart' in window) ? 1 : 0;
+    }
+
+  function _OnVRTelemetryBeacon(url, body) {
+      if (!navigator.sendBeacon) return 0;
+      return navigator.sendBeacon(UTF8ToString(url), new Blob([UTF8ToString(body)], { type: 'text/plain' })) ? 1 : 0;
+    }
+
+  function _OnVRTelemetryWatchPage(gameObjectName) {
+      var name = UTF8ToString(gameObjectName);
+      var notify = function () { try { SendMessage(name, 'OnPageHidden'); } catch (e) { } };
+      document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') notify(); });
+      window.addEventListener('pagehide', notify);
     }
 
   function _SetOnVRCoreWebGLCursor(cursorPtr) {
@@ -17815,11 +17838,15 @@ var wasmImports = {
   "JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
   "OnVRCoreWebQuit": _OnVRCoreWebQuit,
   "OnVRGetBrowserPlatform": _OnVRGetBrowserPlatform,
+  "OnVRHapticWebAvailable": _OnVRHapticWebAvailable,
+  "OnVRHapticWebVibrate": _OnVRHapticWebVibrate,
   "OnVRRigOrientationRead": _OnVRRigOrientationRead,
   "OnVRRigOrientationStart": _OnVRRigOrientationStart,
   "OnVRRigOrientationState": _OnVRRigOrientationState,
   "OnVRRigOrientationStop": _OnVRRigOrientationStop,
   "OnVRRigOrientationSupported": _OnVRRigOrientationSupported,
+  "OnVRTelemetryBeacon": _OnVRTelemetryBeacon,
+  "OnVRTelemetryWatchPage": _OnVRTelemetryWatchPage,
   "SetOnVRCoreWebGLCursor": _SetOnVRCoreWebGLCursor,
   "SetWebGLCursor": _SetWebGLCursor,
   "SetupRpm": _SetupRpm,
@@ -18149,6 +18176,7 @@ var wasmImports = {
   "invoke_iiifii": invoke_iiifii,
   "invoke_iiifiifiiii": invoke_iiifiifiiii,
   "invoke_iiii": invoke_iiii,
+  "invoke_iiiiffii": invoke_iiiiffii,
   "invoke_iiiifi": invoke_iiiifi,
   "invoke_iiiifii": invoke_iiiifii,
   "invoke_iiiii": invoke_iiiii,
@@ -18160,6 +18188,7 @@ var wasmImports = {
   "invoke_iiiiiifii": invoke_iiiiiifii,
   "invoke_iiiiiii": invoke_iiiiiii,
   "invoke_iiiiiiidii": invoke_iiiiiiidii,
+  "invoke_iiiiiiiffi": invoke_iiiiiiiffi,
   "invoke_iiiiiiii": invoke_iiiiiiii,
   "invoke_iiiiiiiifiii": invoke_iiiiiiiifiii,
   "invoke_iiiiiiiii": invoke_iiiiiiiii,
@@ -18222,6 +18251,7 @@ var wasmImports = {
   "invoke_viidiji": invoke_viidiji,
   "invoke_viiff": invoke_viiff,
   "invoke_viifffffi": invoke_viifffffi,
+  "invoke_viifffiii": invoke_viifffiii,
   "invoke_viiffi": invoke_viiffi,
   "invoke_viiffii": invoke_viiffii,
   "invoke_viiffiii": invoke_viiffiii,
@@ -19370,6 +19400,16 @@ var dynCall_viiiiifiiii = Module["dynCall_viiiiifiiii"] = function() {
 };
 
 /** @type {function(...*):?} */
+var dynCall_iiiiiiiffi = Module["dynCall_iiiiiiiffi"] = function() {
+  return (dynCall_iiiiiiiffi = Module["dynCall_iiiiiiiffi"] = Module["asm"]["dynCall_iiiiiiiffi"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_viifffiii = Module["dynCall_viifffiii"] = function() {
+  return (dynCall_viifffiii = Module["dynCall_viifffiii"] = Module["asm"]["dynCall_viifffiii"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
 var dynCall_vijiiiii = Module["dynCall_vijiiiii"] = function() {
   return (dynCall_vijiiiii = Module["dynCall_vijiiiii"] = Module["asm"]["dynCall_vijiiiii"]).apply(null, arguments);
 };
@@ -19585,8 +19625,18 @@ var dynCall_vifiii = Module["dynCall_vifiii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_vifffffi = Module["dynCall_vifffffi"] = function() {
-  return (dynCall_vifffffi = Module["dynCall_vifffffi"] = Module["asm"]["dynCall_vifffffi"]).apply(null, arguments);
+var dynCall_viffffffi = Module["dynCall_viffffffi"] = function() {
+  return (dynCall_viffffffi = Module["dynCall_viffffffi"] = Module["asm"]["dynCall_viffffffi"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_iiiiiifi = Module["dynCall_iiiiiifi"] = function() {
+  return (dynCall_iiiiiifi = Module["dynCall_iiiiiifi"] = Module["asm"]["dynCall_iiiiiifi"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_iidiii = Module["dynCall_iidiii"] = function() {
+  return (dynCall_iidiii = Module["dynCall_iidiii"] = Module["asm"]["dynCall_iidiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -19607,6 +19657,11 @@ var dynCall_viiiifififi = Module["dynCall_viiiifififi"] = function() {
 /** @type {function(...*):?} */
 var dynCall_iiiffi = Module["dynCall_iiiffi"] = function() {
   return (dynCall_iiiffi = Module["dynCall_iiiffi"] = Module["asm"]["dynCall_iiiffi"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_ifiii = Module["dynCall_ifiii"] = function() {
+  return (dynCall_ifiii = Module["dynCall_ifiii"] = Module["asm"]["dynCall_ifiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -19635,8 +19690,8 @@ var dynCall_vifiififi = Module["dynCall_vifiififi"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiiiiiiffi = Module["dynCall_iiiiiiiffi"] = function() {
-  return (dynCall_iiiiiiiffi = Module["dynCall_iiiiiiiffi"] = Module["asm"]["dynCall_iiiiiiiffi"]).apply(null, arguments);
+var dynCall_iiifiiii = Module["dynCall_iiifiiii"] = function() {
+  return (dynCall_iiifiiii = Module["dynCall_iiifiiii"] = Module["asm"]["dynCall_iiifiiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -19740,11 +19795,6 @@ var dynCall_ffii = Module["dynCall_ffii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_ifiii = Module["dynCall_ifiii"] = function() {
-  return (dynCall_ifiii = Module["dynCall_ifiii"] = Module["asm"]["dynCall_ifiii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
 var dynCall_iiiiifii = Module["dynCall_iiiiifii"] = function() {
   return (dynCall_iiiiifii = Module["dynCall_iiiiifii"] = Module["asm"]["dynCall_iiiiifii"]).apply(null, arguments);
 };
@@ -19755,8 +19805,23 @@ var dynCall_viffiii = Module["dynCall_viffiii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiffffi = Module["dynCall_iiffffi"] = function() {
-  return (dynCall_iiffffi = Module["dynCall_iiffffi"] = Module["asm"]["dynCall_iiffffi"]).apply(null, arguments);
+var dynCall_iiffffii = Module["dynCall_iiffffii"] = function() {
+  return (dynCall_iiffffii = Module["dynCall_iiffffii"] = Module["asm"]["dynCall_iiffffii"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_viifffi = Module["dynCall_viifffi"] = function() {
+  return (dynCall_viifffi = Module["dynCall_viifffi"] = Module["asm"]["dynCall_viifffi"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_vfiii = Module["dynCall_vfiii"] = function() {
+  return (dynCall_vfiii = Module["dynCall_vfiii"] = Module["asm"]["dynCall_vfiii"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_iiiffiii = Module["dynCall_iiiffiii"] = function() {
+  return (dynCall_iiiffiii = Module["dynCall_iiiffiii"] = Module["asm"]["dynCall_iiiffiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -19850,11 +19915,6 @@ var dynCall_iidii = Module["dynCall_iidii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iidiii = Module["dynCall_iidiii"] = function() {
-  return (dynCall_iidiii = Module["dynCall_iidiii"] = Module["asm"]["dynCall_iidiii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
 var dynCall_jidi = Module["dynCall_jidi"] = function() {
   return (dynCall_jidi = Module["dynCall_jidi"] = Module["asm"]["dynCall_jidi"]).apply(null, arguments);
 };
@@ -19872,6 +19932,11 @@ var dynCall_fidi = Module["dynCall_fidi"] = function() {
 /** @type {function(...*):?} */
 var dynCall_ijiiiii = Module["dynCall_ijiiiii"] = function() {
   return (dynCall_ijiiiii = Module["dynCall_ijiiiii"] = Module["asm"]["dynCall_ijiiiii"]).apply(null, arguments);
+};
+
+/** @type {function(...*):?} */
+var dynCall_vifffffi = Module["dynCall_vifffffi"] = function() {
+  return (dynCall_vifffffi = Module["dynCall_vifffffi"] = Module["asm"]["dynCall_vifffffi"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -19910,11 +19975,6 @@ var dynCall_iiiifiiii = Module["dynCall_iiiifiiii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_viffffffi = Module["dynCall_viffffffi"] = function() {
-  return (dynCall_viffffffi = Module["dynCall_viffffffi"] = Module["asm"]["dynCall_viffffffi"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
 var dynCall_diiiii = Module["dynCall_diiiii"] = function() {
   return (dynCall_diiiii = Module["dynCall_diiiii"] = Module["asm"]["dynCall_diiiii"]).apply(null, arguments);
 };
@@ -19950,11 +20010,6 @@ var dynCall_viiiifffi = Module["dynCall_viiiifffi"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_vfiii = Module["dynCall_vfiii"] = function() {
-  return (dynCall_vfiii = Module["dynCall_vfiii"] = Module["asm"]["dynCall_vfiii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
 var dynCall_fffifffi = Module["dynCall_fffifffi"] = function() {
   return (dynCall_fffifffi = Module["dynCall_fffifffi"] = Module["asm"]["dynCall_fffifffi"]).apply(null, arguments);
 };
@@ -19982,11 +20037,6 @@ var dynCall_ddddi = Module["dynCall_ddddi"] = function() {
 /** @type {function(...*):?} */
 var dynCall_jjjji = Module["dynCall_jjjji"] = function() {
   return (dynCall_jjjji = Module["dynCall_jjjji"] = Module["asm"]["dynCall_jjjji"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_viifffi = Module["dynCall_viifffi"] = function() {
-  return (dynCall_viifffi = Module["dynCall_viifffi"] = Module["asm"]["dynCall_viifffi"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -20020,13 +20070,13 @@ var dynCall_iiifiii = Module["dynCall_iiifiii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiiiifiii = Module["dynCall_iiiiifiii"] = function() {
-  return (dynCall_iiiiifiii = Module["dynCall_iiiiifiii"] = Module["asm"]["dynCall_iiiiifiii"]).apply(null, arguments);
+var dynCall_iifiiii = Module["dynCall_iifiiii"] = function() {
+  return (dynCall_iifiiii = Module["dynCall_iifiiii"] = Module["asm"]["dynCall_iifiiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiifiiii = Module["dynCall_iiifiiii"] = function() {
-  return (dynCall_iiifiiii = Module["dynCall_iiifiiii"] = Module["asm"]["dynCall_iiifiiii"]).apply(null, arguments);
+var dynCall_iiiiifiii = Module["dynCall_iiiiifiii"] = function() {
+  return (dynCall_iiiiifiii = Module["dynCall_iiiiifiii"] = Module["asm"]["dynCall_iiiiifiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -20315,11 +20365,6 @@ var dynCall_vifffiii = Module["dynCall_vifffiii"] = function() {
 };
 
 /** @type {function(...*):?} */
-var dynCall_iiiffiii = Module["dynCall_iiiffiii"] = function() {
-  return (dynCall_iiiffiii = Module["dynCall_iiiffiii"] = Module["asm"]["dynCall_iiiffiii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
 var dynCall_ifiiiifiii = Module["dynCall_ifiiiifiii"] = function() {
   return (dynCall_ifiiiifiii = Module["dynCall_ifiiiifiii"] = Module["asm"]["dynCall_ifiiiifiii"]).apply(null, arguments);
 };
@@ -20507,11 +20552,6 @@ var dynCall_viiiiiiiiffifiiiii = Module["dynCall_viiiiiiiiffifiiiii"] = function
 /** @type {function(...*):?} */
 var dynCall_viffiiiii = Module["dynCall_viffiiiii"] = function() {
   return (dynCall_viffiiiii = Module["dynCall_viffiiiii"] = Module["asm"]["dynCall_viffiiiii"]).apply(null, arguments);
-};
-
-/** @type {function(...*):?} */
-var dynCall_viifffiii = Module["dynCall_viifffiii"] = function() {
-  return (dynCall_viifffiii = Module["dynCall_viifffiii"] = Module["asm"]["dynCall_viifffiii"]).apply(null, arguments);
 };
 
 /** @type {function(...*):?} */
@@ -22386,6 +22426,17 @@ function invoke_viiiffffii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   }
 }
 
+function invoke_iiiifi(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiiifi(index,a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_viiifiii(index,a1,a2,a3,a4,a5,a6,a7) {
   var sp = stackSave();
   try {
@@ -22489,6 +22540,39 @@ function invoke_vifffii(index,a1,a2,a3,a4,a5,a6) {
   var sp = stackSave();
   try {
     dynCall_vifffii(index,a1,a2,a3,a4,a5,a6);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiffii(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiiiffii(index,a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiiffi(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiiiiiiffi(index,a1,a2,a3,a4,a5,a6,a7,a8,a9);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viifffiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
+  var sp = stackSave();
+  try {
+    dynCall_viifffiii(index,a1,a2,a3,a4,a5,a6,a7,a8);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
@@ -22643,17 +22727,6 @@ function invoke_iffffi(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
     return dynCall_iffffi(index,a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiifi(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return dynCall_iiiifi(index,a1,a2,a3,a4,a5);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
