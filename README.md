@@ -1,1 +1,1 @@
-onXT demo, WebGL build of the onVR Warehouse onXT template; built 2026-11-25 from lane/telemetry 0218e76ec (version 0.3): internal UX telemetry to onxt-telemetry.sanketdas.workers.dev
+onXT demo, WebGL build of the onVR Warehouse onXT template; built 2026-11-26 from lane/telemetry 32be7853d (version 0.3): touch holds on teleport points no longer cancel part-way; internal UX telemetry to onxt-telemetry.sanketdas.workers.dev
